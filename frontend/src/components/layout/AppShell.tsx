@@ -11,7 +11,7 @@ import {
   Sparkles, BarChart2, Hash, Receipt, LogOut,
   Search, Bell, HelpCircle, Settings, Bus, FileText, Building2, Calendar, Hotel, BarChart3,
   Sun, Moon, Type, Compass, Gem, Utensils, Users, Radio, PieChart, TrendingUp,
-  Globe, Car, Star, Truck, Trophy, Copy, Image as ImageIcon, Wand2, Plug, Leaf, Bot, Brain, Cloud, Workflow, ShoppingCart, Database, ListChecks, Zap, LayoutGrid, LucideIcon
+  Globe, Car, Star, Truck, Trophy, Copy, Image as ImageIcon, Wand2, Plug, Leaf, Bot, Brain, Cloud, Workflow, ShoppingCart, Database, ListChecks, Zap, LayoutGrid, Crown, LucideIcon
 } from 'lucide-react'
 import { useAuthStore } from '@/stores/authStore'
 import { useTheme } from '@/contexts/ThemeContext'
@@ -33,7 +33,7 @@ import rihlaLogoLight from '@/assets/rihla_logo_light_bg.png'
 const ICON_MAP: Record<string, LucideIcon> = {
   LayoutDashboard, FolderKanban, Calculator, MapPin, Sparkles, BarChart2, Hash, Receipt,
   Bus, FileText, Building2, Calendar, Hotel, BarChart3, Type, Compass, Gem, Utensils,
-  Users, Radio, PieChart, TrendingUp, Globe, Car, Star, Truck, Bell, Settings, Trophy, Copy, ImageIcon, Wand2, Plug, Leaf, Bot, Brain, Cloud, Workflow, ShoppingCart, Database, ListChecks, Zap, LayoutGrid,
+  Users, Radio, PieChart, TrendingUp, Globe, Car, Star, Truck, Bell, Settings, Trophy, Copy, ImageIcon, Wand2, Plug, Leaf, Bot, Brain, Cloud, Workflow, ShoppingCart, Database, ListChecks, Zap, LayoutGrid, Crown,
 }
 
 export function AppShell() {

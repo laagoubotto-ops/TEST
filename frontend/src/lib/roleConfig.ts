@@ -64,6 +64,7 @@ export const ALL_GROUPS: NavGroup[] = [
       { to: '/itineraries',          icon: 'MapPin',          label: 'Concepteur Itinéraires',  shortcut: '3' },
       { to: '/itinerary-templates',  icon: 'Copy',            label: 'Templates de Circuits' },
       { to: '/activities',            icon: 'Star',            label: 'Catalogue Activités',     shortcut: 'Y' },
+      { to: '/premium-catalogs',      icon: 'Crown',           label: 'Catalogues Premium',      shortcut: 'C' },
       { to: '/media-library',        icon: 'ImageIcon',       label: 'Bibliothèque mutualisée' },
       { to: '/document-templates',   icon: 'FileText',        label: 'Documents Opérationnels' },
     ],

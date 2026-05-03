@@ -86,6 +86,7 @@ async def lifespan(app: FastAPI):
         from app.modules.automations import models as _automations_models  # noqa: F401 — register tables
         from app.modules.travel_designer import models as _td_models  # noqa: F401 — register tables
         from app.modules.b2b_portal import models as _b2b_models  # noqa: F401 — register tables
+        from app.modules.premium_catalogs import models as _pcat_models  # noqa: F401 — register tables
         Base.metadata.create_all(bind=_engine)
     except Exception as exc:
         logging.warning("create_all (automations) skipped: %s", exc)
@@ -231,6 +232,9 @@ app.include_router(automations_router, prefix="/api")
 app.include_router(travel_designer_pro_router, prefix="/api")
 app.include_router(b2b_portal_router, prefix="/api")
 app.include_router(b2b_portal_public_router, prefix="/api")
+
+from app.modules.premium_catalogs.router import router as premium_catalogs_router
+app.include_router(premium_catalogs_router, prefix="/api")
 
 # Tenant context middleware (extracts company_id from JWT)
 app.add_middleware(TenantMiddleware)

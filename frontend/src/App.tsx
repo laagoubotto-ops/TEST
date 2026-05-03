@@ -63,6 +63,9 @@ const ContentStudioPage     = lazy(() => import('@/pages/ContentStudioPage').the
 const AIAssistantPage       = lazy(() => import('@/pages/AIAssistantPage').then(m => ({ default: m.AIAssistantPage })))
 const EmailQuotationPage    = lazy(() => import('@/pages/EmailQuotationPage').then(m => ({ default: m.EmailQuotationPage })))
 
+// Premium Catalogues
+const PremiumCataloguesPage = lazy(() => import('@/pages/PremiumCataloguesPage').then(m => ({ default: m.PremiumCataloguesPage })))
+
 // Logistique & Ressources
 const HorizonPortalPage     = lazy(() => import('@/pages/HorizonPortalPage').then(m => ({ default: m.HorizonPortalPage })))
 const HotelInventoryPage    = lazy(() => import('@/pages/HotelInventoryPage').then(m => ({ default: m.HotelInventoryPage })))
@@ -239,6 +242,9 @@ export default function App() {
                 <Route path="/ai/content-studio"     element={<ContentStudioPage />} />
                 <Route path="/ai"                    element={<AIAssistantPage />} />
                 <Route path="/email-quotation"       element={<EmailQuotationPage />} />
+
+                {/* PREMIUM CATALOGUES */}
+                <Route path="/premium-catalogs"      element={<PremiumCataloguesPage />} />
 
                 {/* LOGISTIQUE & RESSOURCES */}
                 <Route path="/portal/horizon"        element={<HorizonPortalPage />} />
