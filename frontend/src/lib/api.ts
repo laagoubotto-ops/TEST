@@ -571,11 +571,11 @@ export const transportsApi = {
 // ── Premium Catalogues (unified) ──────────────────────────────────
 export const premiumCatalogsApi = {
   list:     (params?: { kind?: string; city?: string; tier?: string; search?: string; featured?: boolean }) =>
-    api.get('/premium-catalogs', { params }),
+    api.get('/premium-catalogs/', { params }),
   stats:    () => api.get('/premium-catalogs/stats'),
   cities:   () => api.get('/premium-catalogs/cities'),
   get:      (id: string) => api.get(`/premium-catalogs/${id}`),
-  create:   (data: any)  => api.post('/premium-catalogs', data),
+  create:   (data: any)  => api.post('/premium-catalogs/', data),
   patch:    (id: string, data: any) => api.patch(`/premium-catalogs/${id}`, data),
   delete:   (id: string) => api.delete(`/premium-catalogs/${id}`),
   seedDemo: ()           => api.post('/premium-catalogs/seed-demo'),
