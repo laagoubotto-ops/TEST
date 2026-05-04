@@ -759,7 +759,12 @@ export interface Partner {
   type: PartnerType
   email?: string | null
   phone?: string | null
+  address?: Record<string, string> | null
+  tax_id?: string | null
+  bank_iban?: string | null
   currency: string
+  payment_terms_days?: number | null
+  credit_limit?: number | null
   is_active: boolean
 }
 
@@ -783,6 +788,76 @@ export const partnersApi = {
   create:  (data: Partial<Partner>)         => api.post<Partner>('/partners', data),
   get:     (id: string)                     => api.get<Partner>(`/partners/${id}`),
   update:  (id: string, data: Partial<Partner>) => api.patch<Partner>(`/partners/${id}`, data),
+  stats:   ()                               => api.get('/partners/stats'),
+  seedDemo: ()                              => api.post('/partners/seed-demo'),
+}
+
+// ── Seasons ───────────────────────────────────────────────────────
+export interface Season {
+  id: string
+  name: string
+  season_type: string
+  date_from: string
+  date_to: string
+  applies_to: string[]
+  color?: string | null
+  notes?: string | null
+  status: string
+  created_at?: string
+}
+
+export const seasonsApi = {
+  list:     (params?: { season_type?: string; status?: string }) =>
+            api.get<Season[]>('/seasons/', { params }),
+  get:      (id: string) => api.get<Season>(`/seasons/${id}`),
+  create:   (data: Partial<Season>) => api.post<Season>('/seasons/', data),
+  update:   (id: string, data: Partial<Season>) => api.patch<Season>(`/seasons/${id}`, data),
+  delete:   (id: string) => api.delete(`/seasons/${id}`),
+  seedDemo: () => api.post('/seasons/seed-demo'),
+}
+
+// ── Room Categories & Rates ───────────────────────────────────────
+export interface RoomCategory {
+  id: string
+  hotel_id: string
+  name: string
+  capacity: number
+  description?: string | null
+  amenities: string[]
+  view?: string | null
+  surface_m2?: number | null
+  bed_type?: string | null
+  sort_order: number
+  status: string
+}
+
+export interface RoomRate {
+  id: string
+  room_category_id: string
+  season_id?: string | null
+  season_label?: string | null
+  rate_type: string
+  rate_sgl: number
+  rate_dbl: number
+  rate_tpl?: number | null
+  meal_plan: string
+  currency: string
+  date_from?: string | null
+  date_to?: string | null
+  notes?: string | null
+}
+
+export const roomsApi = {
+  list:     (hotelId: string) => api.get<RoomCategory[]>(`/premium-catalogs/${hotelId}/rooms/`),
+  create:   (hotelId: string, data: Partial<RoomCategory>) => api.post<RoomCategory>(`/premium-catalogs/${hotelId}/rooms/`, data),
+  update:   (roomId: string, data: Partial<RoomCategory>) => api.patch<RoomCategory>(`/premium-catalogs/rooms/${roomId}`, data),
+  delete:   (roomId: string) => api.delete(`/premium-catalogs/rooms/${roomId}`),
+  seedDemo: (hotelId: string) => api.post(`/premium-catalogs/${hotelId}/rooms/seed-demo`),
+  rates: {
+    list:   (roomId: string) => api.get<RoomRate[]>(`/premium-catalogs/rooms/${roomId}/rates/`),
+    create: (roomId: string, data: Partial<RoomRate>) => api.post<RoomRate>(`/premium-catalogs/rooms/${roomId}/rates/`, data),
+    delete: (rateId: string) => api.delete(`/premium-catalogs/rates/${rateId}`),
+  },
 }
 
 export const articlesApi = {

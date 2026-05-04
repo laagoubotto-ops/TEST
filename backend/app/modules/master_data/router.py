@@ -2,6 +2,7 @@
 
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
@@ -65,6 +66,53 @@ def create_partner(
     db.commit()
     db.refresh(partner)
     return partner
+
+
+@partners_router.get("/stats", summary="Partner KPIs")
+def partner_stats(
+    _=Depends(require_auth),
+    company_id: str = Depends(get_current_company_id),
+    db: Session = Depends(get_db),
+):
+    base = db.query(Partner).filter(Partner.company_id == company_id, Partner.is_active.is_(True))
+    total = base.count()
+    by_type = dict(
+        db.query(Partner.type, func.count())
+        .filter(Partner.company_id == company_id, Partner.is_active.is_(True))
+        .group_by(Partner.type)
+        .all()
+    )
+    return {"total": total, "by_type": by_type}
+
+
+@partners_router.post("/seed-demo", summary="Seed demo partners")
+def seed_demo_partners(
+    _=Depends(require_auth),
+    company_id: str = Depends(get_current_company_id),
+    db: Session = Depends(get_db),
+):
+    existing = db.query(Partner).filter(Partner.company_id == company_id).count()
+    if existing > 0:
+        return {"seeded": 0, "message": "Partners already exist for this company"}
+
+    demos = [
+        {"code": "CLI-001", "name": "Voyages Atlas", "type": "customer", "email": "mehdi@voyagesatlas.ma", "phone": "+212 522 112233", "currency": "MAD", "payment_terms_days": 30, "credit_limit": 500000, "address": {"city": "Casablanca", "country": "Maroc"}},
+        {"code": "CLI-002", "name": "Sahara Dreams TO", "type": "customer", "email": "claire@saharadreams.fr", "phone": "+33 1 45678901", "currency": "EUR", "payment_terms_days": 45, "credit_limit": 1000000, "address": {"city": "Paris", "country": "France"}},
+        {"code": "CLI-003", "name": "OCP Group", "type": "customer", "email": "travel@ocp.ma", "phone": "+212 522 334455", "currency": "MAD", "payment_terms_days": 60, "credit_limit": 2000000, "address": {"city": "Casablanca", "country": "Maroc"}},
+        {"code": "CLI-004", "name": "Marrakech Excursions", "type": "customer", "email": "hassan@marrakechexcursions.com", "phone": "+212 524 445566", "currency": "MAD", "payment_terms_days": 15, "address": {"city": "Marrakech", "country": "Maroc"}},
+        {"code": "CLI-005", "name": "Kuoni Travel", "type": "customer", "email": "morocco@kuoni.ch", "currency": "CHF", "payment_terms_days": 30, "credit_limit": 750000, "address": {"city": "Zürich", "country": "Suisse"}},
+        {"code": "CLI-006", "name": "Jean-Pierre Moreau", "type": "customer", "email": "jp.moreau@gmail.com", "phone": "+33 6 12345678", "currency": "EUR", "address": {"city": "Lyon", "country": "France"}},
+        {"code": "SUP-001", "name": "Royal Mansour Collection", "type": "supplier", "email": "reservations@royalmansour.ma", "phone": "+212 524 808080", "currency": "MAD", "address": {"city": "Marrakech", "country": "Maroc"}},
+        {"code": "SUP-002", "name": "Accor Hotels Maroc", "type": "supplier", "email": "groups.maroc@accor.com", "phone": "+212 522 998877", "currency": "MAD", "address": {"city": "Casablanca", "country": "Maroc"}},
+        {"code": "SUP-003", "name": "S'Tours Fleet", "type": "supplier", "email": "fleet@stours.ma", "phone": "+212 524 556677", "currency": "MAD", "address": {"city": "Marrakech", "country": "Maroc"}},
+        {"code": "SUP-004", "name": "La Maison Arabe", "type": "supplier", "email": "events@lamaisonarabe.com", "phone": "+212 524 387010", "currency": "MAD", "address": {"city": "Marrakech", "country": "Maroc"}},
+        {"code": "GID-001", "name": "Fatima Zahra El Alami", "type": "guide", "email": "fatima@stours.ma", "phone": "+212 661 223344", "currency": "MAD", "address": {"city": "Marrakech", "country": "Maroc"}},
+        {"code": "GID-002", "name": "Youssef Amrani", "type": "guide", "email": "youssef.guide@gmail.com", "phone": "+212 662 445566", "currency": "MAD", "address": {"city": "Fès", "country": "Maroc"}},
+    ]
+    for d in demos:
+        db.add(Partner(company_id=company_id, **d))
+    db.commit()
+    return {"seeded": len(demos), "customers": 6, "suppliers": 4, "guides": 2}
 
 
 @partners_router.get("/{partner_id}", response_model=PartnerOut)

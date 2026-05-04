@@ -1,9 +1,10 @@
 import { useState, useMemo } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Hotel, Compass, Utensils, Star, Bus, Landmark,
   Search, Filter, MapPin, DollarSign, TrendingUp,
   Crown, ChevronDown, RefreshCw, Eye, Sparkles,
-  Mountain, ChefHat, Award,
+  Mountain, ChefHat, Award, BedDouble,
 } from 'lucide-react'
 import { clsx } from 'clsx'
 import { useQuery } from '@tanstack/react-query'
@@ -415,6 +416,16 @@ function CatalogCard({ item }: { item: any }) {
       {/* Supplier */}
       {item.supplier && item.supplier !== '—' && (
         <p className="text-[11px] text-slate-400 mt-1.5">{item.supplier}</p>
+      )}
+
+      {/* Hotel rooms link */}
+      {item.kind === 'hotel' && (
+        <Link
+          to={`/premium-catalogs/${item.id}/rooms`}
+          className="flex items-center gap-1.5 mt-2 text-[11px] text-rihla hover:text-rihla/80 font-medium"
+        >
+          <BedDouble size={12} /> Voir Chambres & Tarifs
+        </Link>
       )}
     </div>
   )
