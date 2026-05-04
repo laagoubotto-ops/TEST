@@ -65,6 +65,9 @@ const EmailQuotationPage    = lazy(() => import('@/pages/EmailQuotationPage').th
 
 // Premium Catalogues
 const PremiumCataloguesPage = lazy(() => import('@/pages/PremiumCataloguesPage').then(m => ({ default: m.PremiumCataloguesPage })))
+const PartnersPage = lazy(() => import('@/pages/PartnersPage').then(m => ({ default: m.PartnersPage })))
+const SeasonsPage = lazy(() => import('@/pages/SeasonsPage').then(m => ({ default: m.SeasonsPage })))
+const HotelRoomsPage = lazy(() => import('@/pages/HotelRoomsPage').then(m => ({ default: m.HotelRoomsPage })))
 
 // Logistique & Ressources
 const HorizonPortalPage     = lazy(() => import('@/pages/HorizonPortalPage').then(m => ({ default: m.HorizonPortalPage })))
@@ -245,6 +248,9 @@ export default function App() {
 
                 {/* PREMIUM CATALOGUES */}
                 <Route path="/premium-catalogs"      element={<PremiumCataloguesPage />} />
+                <Route path="/premium-catalogs/:hotelId/rooms" element={<HotelRoomsPage />} />
+                <Route path="/partners"              element={<PartnersPage />} />
+                <Route path="/seasons"               element={<SeasonsPage />} />
 
                 {/* LOGISTIQUE & RESSOURCES */}
                 <Route path="/portal/horizon"        element={<HorizonPortalPage />} />
